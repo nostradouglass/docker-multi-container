@@ -2,26 +2,26 @@ sudo: required
 services: 
   - docker
 
-  before_install:
-    - docker build -t kellydouglass/react-test -f ./client/Dockerfile.dev ./client
+before_install:
+  - docker build -t kellydouglass/react-test -f ./client/Dockerfile.dev ./client
 
-  script: 
-    - docker run -e CI=true USERNAME/react-test npm test -- --coverage
+script: 
+  - docker run -e CI=true kellydouglass/react-test npm test -- --coverage
 
-  after_success:
-    - docker build -t kellydouglass/multi-client ./client
-    - docker build -t kellydouglass/multi-nginx ./nginx
-    - docker build -t kellydouglass/multi-server ./server
-    - docker build -t kellydouglass/multi-worker ./worker
+after_success:
+  - docker build -t kellydouglass/multi-client ./client
+  - docker build -t kellydouglass/multi-nginx ./nginx
+  - docker build -t kellydouglass/multi-server ./server
+  - docker build -t kellydouglass/multi-worker ./worker
 
-    # Login to Docker CLI
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Login to Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
-    # Take the images and push to docker hub
-    - docker push kellydouglass/multi-client
-    - docker push kellydouglass/multi-nginx
-    - docker push kellydouglass/multi-server
-    - docker push kellydouglass/multi-worker
+  # Take the images and push to docker hub
+  - docker push kellydouglass/multi-client
+  - docker push kellydouglass/multi-nginx
+  - docker push kellydouglass/multi-server
+  - docker push kellydouglass/multi-worker
 
 
 
